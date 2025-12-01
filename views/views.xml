@@ -362,6 +362,8 @@
 
                         <group col="2">
                             <field name="schedule_end_date" invisible="repeat_type == 'never'" required="repeat_type != 'never'" readonly="state not in ['draft', 'waitingforapproval']"/>
+                            <field name="outside_visitor" invisible="key_type != 'schedule'" readonly="state not in ['draft', 'waitingforapproval']"/>
+                            <field name="visitor_form_url" invisible="outside_visitor != True" readonly="1" widget="url"/>
                             <field name="groups_sponsoring_activity" readonly="state not in ['draft', 'waitingforapproval']"/>
                         </group>
                         <group col="4">

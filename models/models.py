@@ -182,6 +182,9 @@ class IsyTicketingRequests(models.Model):
 
     date_from_toshow = fields.Datetime(string='From Date (To Show)',compute='compute_date',store=True)
     date_to_toshow = fields.Datetime(string='To Date (To Show)',compute='compute_date',store=True)
+    outside_visitor = fields.Boolean(string="Outside Visitor", default=False)
+    visitor_form_url = fields.Char(string="Visitor Form URL",
+        default=lambda self: self.env['ir.config_parameter'].sudo().get_param('isy.visitor_form_url', ''))
 
     attachment_1 = fields.Binary(string="Attachment 1", attachment=True)
     attachment_1_filename = fields.Char(string="Attachment 1 Filename")
