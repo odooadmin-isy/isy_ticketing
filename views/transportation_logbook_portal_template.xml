@@ -1,0 +1,96 @@
+<odoo>
+    <data>
+        <!-- Complete page of the Transportation Logbook -->
+        <template id="transportation_logbooks" name="Portal layout : transportation logbook menu entries" inherit_id="portal.portal_breadcrumbs" priority="120">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'transportation_logbook' or transportation_logbook" t-attf-class="breadcrumb-item #{'active ' if not transportation_logbook else ''}">
+                    <a t-if="transportation_logbooks" t-attf-href="/my/transportation_logbooks?{{ keep_query() }}">Transportation Logbooks</a>
+                    <t t-else="">Transportation Logbook</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="portal_transportation_logbooks" name="Transportation Logbook Portal" inherit_id="portal.portal_my_home" priority="120">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-if="request.env.user.portal_transportation_logbook_user" t-call="isy_ticketing.portal_docs_entry">
+                    <t t-set="title">Transportation Logbook</t>
+                    <t t-set="url" t-value="'/my/transportation_logbooks'"/>
+                    <t t-set="count" t-value="transportation_logbooks_count"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="portal_my_transportation_logbook" name="Transportation Logbook">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Transportation Logbook</t>
+                </t>
+                <hr/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <a t-attf-href="/web#view_type=form&amp;model=transportation.logbook&amp;&amp;action=isy_ticketing.menu_transportation_logbook_action" class="btn btn-info">New Transportation Logbook</a>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th></th>
+                            <th>Ref #</th>
+                            <th>Destination</th>
+                            <th>Other Destination</th>
+                            <th>Vehicle</th>
+                            <th>Driver</th>
+                            <th>Date</th>
+                            <th>Created By</th>
+                            <th>Start Mileage</th>
+                            <th>End Mileage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="transportation_logbooks" t-as="me_logbook">
+                            <tr>
+                                <td>
+                                    <a class="btn btn-info" t-att-href="'/web#return_label=Website&amp;model=transportation.logbook&amp;id=%s&amp;view_type=form' % (me_logbook.id)">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.name" t-if="me_logbook.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.destination_id.name" t-if="me_logbook.destination_id"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.other_destination" t-if="me_logbook.other_destination"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.vehicle_id.name" t-if="me_logbook.vehicle_id"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.driver_id.name" t-if="me_logbook.driver_id"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.date" t-if="me_logbook.date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.create_uid.name" t-if="me_logbook.create_uid"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.start_mileage" t-if="me_logbook.start_mileage"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.end_mileage" t-if="me_logbook.end_mileage"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

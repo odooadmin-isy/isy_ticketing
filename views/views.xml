@@ -40,6 +40,9 @@
                                 <field name="portal_audio_request_user"/>
                                 <field name="portal_clinic_request_user"/>
                                 <field name="portal_communication_request_user"/>
+                                <field name="portal_vehicle_generator_logbook_user"/>
+                                <field name="portal_generator_usage_logbook_user"/>
+                                <field name="portal_transportation_logbook_user"/>
                         </group>
                 </xpath>
             </field>
@@ -275,6 +278,8 @@
                             <field name="pick_up_location" readonly="state != 'draft'" required="1"/>
                             <field name="dropoff_location" readonly="state != 'draft'" required="1"/>
                             <field name="pick_up_at_dropoff_location" readonly="state != 'draft'" required="1"/>
+                            <!-- <field name="start_mileage" readonly="state not in ('waitingfordriverassign','waitingforapproval','pendingresolution')" required="1"/>
+                            <field name="end_mileage" readonly="state not in ('pendingresolution')" required="1"/> -->
                             <field name="is_driver_allocated" invisible="1"/>
                             <field name="no_of_passengers" required="1" readonly="state == 'resolved'"/>
                             <field name="fleet" readonly="state != 'waitingfordriverassign'" domain="[('check_availability','=',True),('seats','>=',no_of_passengers)]" options="{'no_create': True}" invisible="key_type != 'transportation'"/>
@@ -776,7 +781,7 @@
             parent="isy_ticketing.menu_isy_ticketing_root"
             groups="isy_ticketing.group_ser_requestor,isy_ticketing.group_ser_user,isy_ticketing.group_ser_manager,isy_ticketing.group_tnr_requestor,isy_ticketing.group_mr_requestor,isy_ticketing.group_tyr_requestor,isy_ticketing.group_mr_user,isy_ticketing.group_tyr_user,isy_ticketing.group_tnr_user"/>
         <menuitem name="Settings" id="isy_ticketing.menu_settings" parent="isy_ticketing.menu_isy_ticketing_root" groups="isy_ticketing.group_mr_manager,isy_ticketing.group_tyr_manager"/>
-
+        <menuitem name="Logbooks" id="isy_ticketing.menu_logbooks" parent="isy_ticketing.menu_isy_ticketing_root" groups="isy_ticketing.group_mr_manager,isy_ticketing.group_tyr_manager"/>
         <!-- actions -->
 
         <menuitem

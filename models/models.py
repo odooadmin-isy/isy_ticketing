@@ -63,13 +63,6 @@ REPEAT_TYPE = [
 class IsyTicketingRequests(models.Model):
     _name = 'isy.ticketing.requests'
     _inherit = 'mail.thread'
-
-    # def _name_search(self,display_stock_building, args=None, operator='ilike', limit=100):
-    #     if operator == 'like': 
-    #         operator = 'ilike'
-
-    #     versions=self.search([('display_stock_building', operator, display_stock_building)], limit=limit)
-    #     return versions.name_get()
     
     def _name_search_location(self,display_stock_location, args=None, operator='ilike', limit=100):
         if operator == 'like': 
@@ -117,7 +110,6 @@ class IsyTicketingRequests(models.Model):
     is_old_location = fields.Boolean(string='Is old location(?)', default=False)
     display_stock_building = fields.Char(string="Building", compute="_get_display_name",store=True) #,search=_name_search)
     display_stock_location = fields.Char(string="Resource/Location", compute="_get_display_name_location",store=True) #,search=_name_search_location)
-
 
     equipment_id = fields.Many2one('product.product', string='Equipments')
     due_date = fields.Date(string='Due')
@@ -173,12 +165,6 @@ class IsyTicketingRequests(models.Model):
     requests_details = fields.One2many('isy.ticketing.requests.details', 'ticket_id', string="Request Details")
     parent_id = fields.Many2one('isy.ticketing.requests', string="Ref Request#")
     cancellation_reason = fields.Text(string='Cancellation Reason')
-    # need_chair = fields.Boolean(string = "Do you need chairs?")
-    # need_chair_qty = fields.Integer(string = "If yes, how many chairs?")
-    # need_table = fields.Boolean(string = "Do you need tables?")
-    # need_table_qty = fields.Integer(string = "If yes, how many tables?")
-    # need_pa = fields.Boolean(string = "Do you need a PA System?")
-    # need_speaker_stand = fields.Boolean(string = "Do you need a speaker's stand?")
 
     date_from_toshow = fields.Datetime(string='From Date (To Show)',compute='compute_date',store=True)
     date_to_toshow = fields.Datetime(string='To Date (To Show)',compute='compute_date',store=True)
@@ -878,19 +864,6 @@ class IsyTicketingRequests(models.Model):
                     }
                     res_list.append(reg)
 
-        # if record.parent_id:
-        #     index = 0
-        #     while index < len(res_list):
-        #         if res_list[index].get('partner_id') != record.parent_id.create_uid.partner_id.id:
-        #             res_list.append({
-        #                 'res_id': record.id,
-        #                 'res_model': 'isy.ticketing.requests',
-        #                 'partner_id': record.parent_id.create_uid.partner_id.id,
-        #             })
-        #             index += 1
-        #         else:
-        #             index += 1
-
         if record.message_partner_ids:
             index = 0
             while index < len(res_list):
@@ -967,8 +940,7 @@ class IsyTicketingRequests(models.Model):
             irlr_objs = self.env['isy.resources.locations.reserved'].search([('request_id', '=', self.id)])
             if self.description:
                 fac_desc_note += "\nNote : "+self.description
-            # if self.repeat_type and self.repeat_type!='never':
-            #     fac_desc_note += "\nRepeat Type : "+ dict(self._fields['repeat_type'].selection).get(self.repeat_type)
+
             for irlr_obj in irlr_objs:                    
                 fac_desc_note += "\nDate From : " + str(irlr_obj.date_from) + " To : " + str(irlr_obj.date_to) 
                 
@@ -996,9 +968,7 @@ class IsyTicketingRequests(models.Model):
 
                     }
             )
-            # new_obj_fac = self.env['isy.ticketing.requests'].sudo().create(fac_dict)
             new_obj_fac = self.env['isy.ticketing.requests'].with_user(self.create_uid).sudo().create(fac_dict)
-            #self.env.cr.execute(""" update isy_ticketing_requests set create_uid ="""+ str(self.create_uid.id)+""" where id="""+ str(new_obj_fac.id))
 
         technology_objs = self.requests_details.filtered(lambda r: r.details_request_type == 'technology')
         tech_list = []
@@ -1010,8 +980,7 @@ class IsyTicketingRequests(models.Model):
             tech_desc_note = "This is from Schedule Request by "+self.create_uid.name+"<br/>***************************************** "
             if self.description:
                 tech_desc_note += "<br/>Note : "+self.description
-            # if self.repeat_type and self.repeat_type!='never':
-            #     tech_desc_note += "<br/>Repeat Type : "+ dict(self._fields['repeat_type'].selection).get(self.repeat_type)
+
             for irlr_obj in irlr_objs:
                 tech_desc_note += "<br/>Date From : " + str(irlr_obj.date_from) + " " + " To : " + str(irlr_obj.date_to) + "<br/>Location : " + str(irlr_obj.reserved_obj.complete_name)
 
@@ -1039,7 +1008,6 @@ class IsyTicketingRequests(models.Model):
                             'before_starttime': before_starttime,
                     }
             )
-            # new_obj_tech = self.env['isy.technology.request'].sudo().create(tech_dict)
             new_obj_tech = self.env['isy.technology.request'].with_user(self.create_uid).sudo().create(tech_dict)
 
 
@@ -1060,8 +1028,7 @@ class IsyTicketingRequests(models.Model):
                 template = self.env.ref('isy_ticketing.mr_update')  
             elif val == 'reminder':
                 template = self.env.ref('isy_ticketing.mr_reminder')
-        # if check_key_type == 'planning':
-        # 	template = self.env.ref('isy_ticketing.mr_received')
+
         if check_key_type == 'schedule':
             if val == 'received':
                 template = self.env.ref('isy_ticketing.ser_received')
@@ -1109,20 +1076,15 @@ class IsyTicketingRequests(models.Model):
         state = self.state
 
         return {
-                                'name': _('Fill your resolution description!'),
-                                'type': 'ir.actions.act_window',
-                                'res_model': 'isy.ticketing.resolve.wizard',
-                                'res_id': new.id,
-                                'view_id': wizard_form.id,
-                                'view_mode': 'form',
-                                'target': 'new',
-                                'context': {'user_ids': user_ids, 'driver_id': driver_id, 'state': state},
-                        }
-        #if not self.env.user.id in self.user_ids.ids:
-        #raise UserError(_("Only Assign Users must resolve!"))
-
-        #self.state = 'resolved'
-        #self.resolve_user_id = self.env.user.id
+                'name': _('Fill your resolution description!'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'isy.ticketing.resolve.wizard',
+                'res_id': new.id,
+                'view_id': wizard_form.id,
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'user_ids': user_ids, 'driver_id': driver_id, 'state': state},
+        }
 
     def cancel_process(self):
         if not self.cancellation_reason and self.key_type in ('maintenance', 'transportation'):
@@ -1152,7 +1114,6 @@ class IsyTicketingRequests(models.Model):
                 obj_fac.cancel_process()
             obj_technologies = self.env['isy.technology.request'].search([('parent_id', '=', self.id)])
             for obj_tech in obj_technologies:
-                # obj_tech.write({'state': 'cancelled'})
                 obj_tech.request_cancelled()
 
     @api.constrains('date_from', 'date_to')
@@ -1164,7 +1125,6 @@ class IsyTicketingRequests(models.Model):
     @api.onchange('schedule_start_date', 'start_time')
     def onchange_schedule_from_datetime(self):
         if self.key_type == 'transportation' and self.schedule_start_date and self.start_time:
-            #start_time_str = '{0:02.0f}:{1:02.0f}'.format(*divmod(float(self.start_time) / 60, 60))
             if self.start_time:
                 try:
                     start_time = float(self.start_time)  # Ensure it's a float
@@ -1175,15 +1135,13 @@ class IsyTicketingRequests(models.Model):
                     start_time_str = "00:00"  # Default value in case of invalid format
             else:
                 start_time_str = "00:00"  # Default value in case of invalid format
-            # start_time_str = f"{float(self.start_time):02}:00"
-            #date_from = datetime.datetime.strptime(str(self.schedule_start_date) + ' ' + start_time_str + ':00', "%Y-%m-%d %H:%M:%S")
+
             date_from = datetime.datetime.strptime(f"{self.schedule_start_date} {start_time_str}:00", "%Y-%m-%d %H:%M:%S")
             self.date_from = date_from - timedelta(hours=6, minutes=30)
 
     @api.onchange('schedule_end_date', 'end_time')
     def onchange_schedule_to_datetime(self):
         if self.key_type == 'transportation' and self.schedule_end_date and self.end_time:
-            #end_time_str = '{0:02.0f}:{1:02.0f}'.format(*divmod(float(self.end_time) / 60, 60))
             if self.end_time:
                 try:
                     end_time = float(self.end_time)  # Ensure it's a float
@@ -1194,8 +1152,7 @@ class IsyTicketingRequests(models.Model):
                     end_time_str = "00:00"  # Default value in case of invalid format
             else:
                 end_time_str = "00:00"  # Default value in case of invalid format
-            #end_time_str = f"{float(self.end_time):02}:00"
-            #date_to = datetime.datetime.strptime(str(self.schedule_end_date) + ' ' + end_time_str + ':00', "%Y-%m-%d %H:%M:%S")
+
             date_to = datetime.datetime.strptime(f"{self.schedule_end_date} {end_time_str}:00", "%Y-%m-%d %H:%M:%S")
             self.date_to = date_to - timedelta(hours=6, minutes=30)
 
@@ -1222,17 +1179,6 @@ class IsyTicketingRequests(models.Model):
         fleet_obj = self.fleet
         check_availability = 0
         for each in fleet_obj.reserved_time.filtered(lambda x: x.id!=self.reserved_fleet_id.id):
-            # if each.date_from <= self.date_from <= each.date_to:
-            #     check_availability = 1
-            # elif self.date_from < each.date_from:
-            #     if each.date_from <= self.date_to <= each.date_to:
-            #         check_availability = 1
-            #     elif self.date_to > each.date_to:
-            #         check_availability = 1
-            #     else:
-            #         check_availability = 0
-            # else:
-            #     check_availability = 0
             if not (self.date_from>=each.date_to or self.date_to<=each.date_from):
                 check_availability = 1
                 user = each.user.name
@@ -1275,11 +1221,6 @@ class IsyTicketingRequests(models.Model):
                     'date_from': self.date_from,
                     'date_to': self.date_to,
                 })
-            # reserved_id = self.name.reserved_time.create({'user': self.name.id,
-            #                                                'date_from': self.date_from,
-            #                                                'date_to': self.date_to,
-            #                                                'ticket_id': self._context.get('active_id')
-            #                                               })
         else:
             raise UserError('Sorry This driver is already assigned from %s to %s for %s.'%(e_df,e_dt,t_name))
 
@@ -1334,11 +1275,6 @@ class IsyResourcesLocationsReserved(models.Model):
     reserved_obj = fields.Many2one('stock.location', string='Locations')
     request_id = fields.Many2one('isy.ticketing.requests')
 
-    # @api.depends('date_from','date_to')
-    # def compute_date(self):
-    #     for rec in self:
-    #         rec.date_from_toshow = rec.date_from-timedelta(hours=6, minutes=30)
-    #         rec.date_to_toshow = rec.date_to-timedelta(hours=6, minutes=30)
     @api.depends('date_from', 'date_to')
     def compute_date(self):
         for rec in self:
@@ -1411,8 +1347,6 @@ class IsyRequestType(models.Model):
             KEY_SELECTION_TYPE, string='Master Requests Type', help='hidden field to control menu level')
     is_request = fields.Boolean(string='Enable Request Field(?)',
                                                             help='This will show request field in requestes form')
-    # is_tech_setup = fields.Boolean(string='Enable Tech Setup Related Fields',
-    # 							   help='To handle show/hide for start time, end time, technology equipment requested, technician needed, quantity.')
     active = fields.Boolean(default=True)
     default_request = fields.Boolean(default=False)
 
@@ -1438,41 +1372,6 @@ class Message(models.Model):
     """ Messages model: system notification (replacing res.log notifications),
             comments (OpenChatter discussion) and incoming emails. """
     _inherit = 'mail.message'
-
-    # @api.model
-    # def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-    #     """ Override that adds specific access rights of mail.message, to remove
-    #     ids uid could not see according to our custom rules. Please refer to
-    #     check_access_rule for more details about those rules.
-
-    #     Non employees users see only message with subtype (aka do not see
-    #     internal logs).
-
-    #     After having received ids of a classic search, keep only:
-    #     - if author_id == pid, uid is the author, OR
-    #     - uid belongs to a notified channel, OR
-    #     - uid is in the specified recipients, OR
-    #     - uid has a notification on the message
-    #     - otherwise: remove the id
-    #     """
-    #     # Rules do not apply to administrator
-    #     if self.env.is_superuser():
-    #         return super(Message, self)._search(
-    #             args, offset=offset, limit=limit, order=order,
-    #             count=count, access_rights_uid=access_rights_uid)
-    #     # Non-employee see only messages with a subtype and not internal
-    #     """ #ISYers can see all messages
-    #     if not self.env['res.users'].has_group('base.group_user'):
-    #         args = expression.AND([self._get_search_domain_share(), args])
-    #     """
-    #     # Perform a super with count as False, to have the ids, not a counter
-    #     ids = super(Message, self).sudo()._search(
-    #         args, offset=offset, limit=limit, order=order,
-    #         access_rights_uid=access_rights_uid)
-    #     if not ids and count:
-    #         return 0
-    #     elif not ids:
-    #         return ids
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):

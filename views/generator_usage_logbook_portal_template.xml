@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <!-- Complete page of the Generator Usage Logbook -->
+        <template id="generator_usage_logbooks" name="Portal layout : generator usage logbook menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'generator_usage_logbook' or generator_usage_logbook" t-attf-class="breadcrumb-item #{'active ' if not generator_usage_logbook else ''}">
+                    <a t-if="generator_usage_logbooks" t-attf-href="/my/generator_usage_logbooks?{{ keep_query() }}">Generator Usage Logbooks</a>
+                    <t t-else="">Generator Usage Logbook</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="portal_generator_usage_logbooks" name="Generator Usage Logbook Portal" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-if="request.env.user.portal_generator_usage_logbook_user" t-call="isy_ticketing.portal_docs_entry">
+                    <t t-set="title">Generator Usage Logbook</t>
+                    <t t-set="url" t-value="'/my/generator_usage_logbooks'"/>
+                    <t t-set="count" t-value="generator_usage_logbooks_count"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="portal_my_generator_usage_logbook" name="Generator Usage Logbook">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Generator Usage Logbook</t>
+                </t>
+                <hr/>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <a t-attf-href="/web#view_type=form&amp;model=generator.usage.logbook&amp;&amp;action=isy_ticketing.menu_generator_usage_logbook_action" class="btn btn-info">New Generator Usage Logbook</a>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th></th>
+                            <th>Ref #</th>
+                            <th>Location</th>
+                            <th>Generator</th>
+                            <th>Date</th>
+                            <th>Created By</th>
+                            <th>Total Usage</th>
+                            <th>Price Per Liter</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="generator_usage_logbooks" t-as="me_logbook">
+                            <tr>
+                                <td>
+                                    <a class="btn btn-info" t-att-href="'/web#return_label=Website&amp;model=generator.usage.logbook&amp;id=%s&amp;view_type=form' % (me_logbook.id)">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.name" t-if="me_logbook.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.generator_location.capitalize()" t-if="me_logbook.generator_location"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.generator_id.name" t-if="me_logbook.generator_id"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.date" t-if="me_logbook.date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.create_uid.name" t-if="me_logbook.create_uid"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.total_usage" t-if="me_logbook.total_usage"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.price_per_liter" t-if="me_logbook.price_per_liter"/>
+                                </td>
+                                <td>
+                                    <t t-esc="me_logbook.total_cost" t-if="me_logbook.total_cost"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

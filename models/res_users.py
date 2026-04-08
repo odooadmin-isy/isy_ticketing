@@ -28,6 +28,10 @@ class ResUsers(models.Model):
     portal_clinic_request_user = fields.Boolean(string="Portal Clinic User", copy=True, default=False)
     portal_communication_request_user = fields.Boolean(string="Portal Communication User", copy=True, default=False)
 
+    portal_vehicle_generator_logbook_user = fields.Boolean(string="Portal Vehicle/Generator Logbook User", copy=True, default=False)
+    portal_generator_usage_logbook_user = fields.Boolean(string="Portal Generator Usage Logbook User", copy=True, default=False)
+    portal_transportation_logbook_user = fields.Boolean(string="Portal Transportation Logbook User", copy=True, default=False)
+
     check_availability = fields.Boolean(default=True, copy=False)
     reserved_time = fields.One2many('driver.allocation', 'user', String='Allocation Times', readonly=1,
                                                                     ondelete='cascade')
