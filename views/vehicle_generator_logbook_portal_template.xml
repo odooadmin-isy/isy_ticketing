@@ -4,7 +4,7 @@
         <template id="vehicle_generator_logbooks" name="Portal layout : vehicle generator logbook menu entries" inherit_id="portal.portal_breadcrumbs" priority="130">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'vehicle_generator_logbook' or vehicle_generator_logbook" t-attf-class="breadcrumb-item #{'active ' if not vehicle_generator_logbook else ''}">
-                    <a t-if="vehicle_generator_logbooks" t-attf-href="/my/vehicle_generator_logbooks?{{ keep_query() }}">Vehicle/Generator Logbooks</a>
+                    <a t-if="vehicle_generator_logbooks" t-attf-href="/my/vehicle_generator_logbooks?{{ keep_query() }}">Vehicle/Generator Fuel Logbooks</a>
                     <t t-else="">Vehicle/Generator Fuel Logbook</t>
                 </li>
             </xpath>
@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <a t-attf-href="/web#view_type=form&amp;model=vehicle.generator.logbook&amp;&amp;action=isy_ticketing.menu_vehicle_generator_logbook_action" class="btn btn-info">New Vehicle/Generator Logbook</a>
+                            <a t-attf-href="/web#view_type=form&amp;model=vehicle.generator.logbook&amp;&amp;action=isy_ticketing.menu_vehicle_generator_logbook_action" class="btn btn-info">New Vehicle/Generator Fuel Logbook</a>
                         </div>
                     </div>
                 </div>
