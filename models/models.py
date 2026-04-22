@@ -1070,7 +1070,6 @@ class IsyTicketingRequests(models.Model):
         _logger.debug("Ticketing Requests Resolve Wizard Start")
         wizard_form = self.env.ref('isy_ticketing.view_isy_ticketing_resolve_wizard', False)
         view_id = self.env['isy.ticketing.resolve.wizard']
-        new = view_id.create({})
         user_ids = self.user_ids.ids
         driver_id = self.driver_id.id
         state = self.state
@@ -1079,11 +1078,16 @@ class IsyTicketingRequests(models.Model):
                 'name': _('Fill your resolution description!'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'isy.ticketing.resolve.wizard',
-                'res_id': new.id,
                 'view_id': wizard_form.id,
                 'view_mode': 'form',
                 'target': 'new',
-                'context': {'user_ids': user_ids, 'driver_id': driver_id, 'state': state},
+                'context': {
+                    'user_ids': user_ids,
+                    'driver_id': driver_id,
+                    'state': state,
+                    'default_is_transportation': self.key_type == 'transportation',
+                    'active_id': self.id
+                },
         }
 
     def cancel_process(self):
