@@ -5,7 +5,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'vehicle_generator_logbook' or vehicle_generator_logbook" t-attf-class="breadcrumb-item #{'active ' if not vehicle_generator_logbook else ''}">
                     <a t-if="vehicle_generator_logbooks" t-attf-href="/my/vehicle_generator_logbooks?{{ keep_query() }}">Vehicle/Generator Logbooks</a>
-                    <t t-else="">Vehicle/Generator Logbook</t>
+                    <t t-else="">Vehicle/Generator Fuel Logbook</t>
                 </li>
             </xpath>
         </template>
@@ -13,19 +13,19 @@
         <template id="portal_vehicle_generator_logbooks" name="Vehicle Generator Logbook Portal" inherit_id="portal.portal_my_home" priority="130">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-if="request.env.user.portal_vehicle_generator_logbook_user" t-call="isy_ticketing.portal_docs_entry">
-                    <t t-set="title">Vehicle/Generator Logbook</t>
+                    <t t-set="title">Vehicle/Generator Fuel Logbook</t>
                     <t t-set="url" t-value="'/my/vehicle_generator_logbooks'"/>
                     <t t-set="count" t-value="vehicle_generator_logbooks_count"/>
                 </t>
             </xpath>
         </template>
 
-        <template id="portal_my_vehicle_generator_logbook" name="Vehicle/Generator Logbook">
+        <template id="portal_my_vehicle_generator_logbook" name="Vehicle/Generator Fuel Logbook">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Vehicle/Generator Logbook</t>
+                    <t t-set="title">Vehicle/Generator Fuel Logbook</t>
                 </t>
                 <hr/>
                 <div class="row">

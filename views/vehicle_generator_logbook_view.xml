@@ -3,7 +3,7 @@
     <data>
 
         <record model="ir.ui.view" id="vehicle_generator_logbook_tree">
-            <field name="name">Vehicle Generator Logbook Tree</field>
+            <field name="name">Vehicle Generator Fuel Logbook Tree</field>
             <field name="model">vehicle.generator.logbook</field>
             <field name="arch" type="xml">
                 <tree default_order='name desc'>
@@ -19,7 +19,7 @@
         </record>
 
         <record model="ir.ui.view" id="vehicle_generator_logbook_form">
-            <field name="name">Vehicle Generator Logbook Form</field>
+            <field name="name">Vehicle Generator Fuel Logbook Form</field>
             <field name="model">vehicle.generator.logbook</field>
             <field name="arch" type="xml">
                 <form>
@@ -61,13 +61,13 @@
         </record>
 
         <record model="ir.actions.act_window" id="menu_vehicle_generator_logbook_action">
-            <field name="name">Vehicle/Generator Logbook</field>
+            <field name="name">Vehicle/Generator Fuel Logbook</field>
             <field name="res_model">vehicle.generator.logbook</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <menuitem
-            name="Vehicle/Generator Logbook"
+            name="Vehicle/Generator Fuel Logbook"
             id="isy_ticketing.menu_vehicle_generator_logbook"
             parent="isy_ticketing.menu_logbooks"
             action="isy_ticketing.menu_vehicle_generator_logbook_action"

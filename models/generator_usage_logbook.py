@@ -31,7 +31,8 @@ class GeneratorUsageLogbook(models.Model):
             domain="[('generator_location', '=', generator_location)]")
     total_usage = fields.Float(string='Total Usage (Liters)', required=True, track_visibility='onchange')
     price_per_liter = fields.Float(string='Price Per Liter (MMK)', required=True, track_visibility='onchange')
-    total_cost = fields.Float(string='Total Cost', compute='_compute_total_cost', track_visibility='onchange')
+    total_cost = fields.Float(string='Total Cost', compute='_compute_total_cost',
+                        store=True, track_visibility='onchange')
 
     note = fields.Text(string='Note')
 

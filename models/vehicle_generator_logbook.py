@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class VehicleGeneratorLogbook(models.Model):
     _name = 'vehicle.generator.logbook'
     _inherit = ['mail.thread']
-    _description = 'Vehicle Generator Logbook'
+    _description = 'Vehicle/Generator Fuel Logbook'
 
     name = fields.Char(string='Name', default='New')
     logbook_type = fields.Selection([('vehicle', 'Vehicle'), ('generator', 'Generator')],
@@ -25,7 +25,8 @@ class VehicleGeneratorLogbook(models.Model):
 
     amount_purchased = fields.Float(string='Amount Purchased (Liter)', track_visibility='onchange')
     price_per_liter = fields.Float(string='Price Per Liter', track_visibility='onchange')
-    total_price = fields.Float(string='Total Price', compute='_compute_total_price', track_visibility='onchange')
+    total_price = fields.Float(string='Total Price', compute='_compute_total_price',
+                        store=True, track_visibility='onchange')
 
     note = fields.Text(string='Note')
 
