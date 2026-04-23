@@ -1085,7 +1085,7 @@ class IsyTicketingRequests(models.Model):
                     'user_ids': user_ids,
                     'driver_id': driver_id,
                     'state': state,
-                    'default_is_transportation': self.key_type == 'transportation',
+                    # 'default_is_transportation': self.key_type == 'transportation',
                     'active_id': self.id
                 },
         }

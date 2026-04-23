@@ -34,6 +34,25 @@
                 </form>
             </field>
         </record>
+
+        <!-- ISY Generator Search -->
+        <record model="ir.ui.view" id="isy_generator_search">
+            <field name="name">ISY Generator Search</field>
+            <field name="model">isy.generator</field>
+            <field name="arch" type="xml">
+                <search string="Generators">
+                    <field name="name"/>
+                    <field name="generator_location" string="Location"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Location" name="group_location" context="{'group_by': 'generator_location'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- ISY Generator Action -->
         <record model="ir.actions.act_window" id="menu_isy_generator_action">
             <field name="name">ISY Generator</field>
@@ -103,6 +122,31 @@
                         <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </form>
+            </field>
+        </record>
+
+        <!-- Generator Usage Logbook Search -->
+        <record model="ir.ui.view" id="generator_usage_logbook_search">
+            <field name="name">Generator Usage Logbook Search</field>
+            <field name="model">generator.usage.logbook</field>
+            <field name="arch" type="xml">
+                <search string="Generator Usage Logbook">
+                    <field name="name"/>
+                    <field name="generator_id" string="Generator"/>
+                    <field name="generator_location" string="Location"/>
+                    <field name="date"/>
+                    <field name="create_uid" string="Created By"/>
+                    <field name="note"/>
+                    <separator/>
+                    <filter string="ISY" name="filter_isy" domain="[('generator_location', '=', 'isy')]"/>
+                    <filter string="Housing/Residence" name="filter_residence" domain="[('generator_location', '=', 'residence')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Location" name="group_location" context="{'group_by': 'generator_location'}"/>
+                        <filter string="Generator" name="group_generator" context="{'group_by': 'generator_id'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                        <filter string="Created By" name="group_create_uid" context="{'group_by': 'create_uid'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 

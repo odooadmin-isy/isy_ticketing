@@ -92,20 +92,20 @@ class IsyTicketingResolveWizard(models.TransientModel):
         }
         obj_isy_ticketing_requests.write(vals)
 
-        if obj_isy_ticketing_requests.key_type == 'transportation':
-            destination_id = self.env['isy.destination'].search([('is_other_destination', '=', True)], limit=1)
+        # if obj_isy_ticketing_requests.key_type == 'transportation':
+        #     destination_id = self.env['isy.destination'].search([('is_other_destination', '=', True)], limit=1)
 
-            self.env['transportation.logbook'].create({
-                'date': obj_isy_ticketing_requests.due_date,
-                'vehicle_id': obj_isy_ticketing_requests.fleet.id,
-                'driver_id': obj_isy_ticketing_requests.driver_id.id,
-                'destination_id': destination_id.id if destination_id else False,
-                'is_other_destination': True,
-                'other_destination': obj_isy_ticketing_requests.pick_up_location,
-                'start_mileage': self.start_mileage,
-                'end_mileage': self.end_mileage,
-                'note': obj_isy_ticketing_requests.description,
-            })
+        #     self.env['transportation.logbook'].create({
+        #         'date': obj_isy_ticketing_requests.due_date,
+        #         'vehicle_id': obj_isy_ticketing_requests.fleet.id,
+        #         'driver_id': obj_isy_ticketing_requests.driver_id.id,
+        #         'destination_id': destination_id.id if destination_id else False,
+        #         'is_other_destination': True,
+        #         'other_destination': obj_isy_ticketing_requests.pick_up_location,
+        #         'start_mileage': self.start_mileage,
+        #         'end_mileage': self.end_mileage,
+        #         'note': obj_isy_ticketing_requests.description,
+        #     })
 
         if obj_isy_ticketing_requests.key_type == "technology":
             #"https://api.trello.com/1/cards/%s"

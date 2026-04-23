@@ -11,9 +11,9 @@
                             <field name="name" required="1"/>
                         </group>
                         <group>
-                            <field name="is_transportation" invisible="1"/>
+                            <!-- <field name="is_transportation" invisible="1"/>
                             <field name="start_mileage" required="is_transportation==True" invisible="is_transportation == False"/>
-                            <field name="end_mileage" required="is_transportation==True" invisible="is_transportation == False"/>
+                            <field name="end_mileage" required="is_transportation==True" invisible="is_transportation == False"/> -->
                         </group>
                     </group>
                     <footer>

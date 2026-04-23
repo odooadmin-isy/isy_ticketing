@@ -60,6 +60,37 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="vehicle_generator_logbook_search">
+            <field name="name">Vehicle Generator Fuel Logbook Search</field>
+            <field name="model">vehicle.generator.logbook</field>
+            <field name="arch" type="xml">
+                <search string="Vehicle/Generator Fuel Logbook">
+                    <field name="name"/>
+                    <field name="logbook_type" string="Type"/>
+                    <field name="date"/>
+                    <field name="vehicle_id" string="Vehicle"/>
+                    <field name="driver_id" string="Driver"/>
+                    <field name="fuel_type" string="Fuel Type"/>
+                    <field name="create_uid" string="Created By"/>
+                    <field name="note"/>
+                    <separator/>
+                    <filter string="Vehicle" name="filter_vehicle" domain="[('logbook_type', '=', 'vehicle')]"/>
+                    <filter string="Generator" name="filter_generator" domain="[('logbook_type', '=', 'generator')]"/>
+                    <separator/>
+                    <filter string="Gasoline" name="filter_gasoline" domain="[('fuel_type', '=', 'gasoline')]"/>
+                    <filter string="Diesel" name="filter_diesel" domain="[('fuel_type', '=', 'diesel')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Type" name="group_logbook_type" context="{'group_by': 'logbook_type'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                        <filter string="Vehicle" name="group_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                        <filter string="Driver" name="group_driver" context="{'group_by': 'driver_id'}"/>
+                        <filter string="Fuel Type" name="group_fuel_type" context="{'group_by': 'fuel_type'}"/>
+                        <filter string="Created By" name="group_create_uid" context="{'group_by': 'create_uid'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="menu_vehicle_generator_logbook_action">
             <field name="name">Vehicle/Generator Fuel Logbook</field>
             <field name="res_model">vehicle.generator.logbook</field>
