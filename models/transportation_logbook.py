@@ -18,11 +18,23 @@ class TransportationLogbook(models.Model):
     _inherit = ['mail.thread']
     _description = 'Transportation Logbook'
 
+    def _get_vehicle_selection(self):
+        vehicles = self.env['fleet.vehicle'].sudo().search([
+            ('check_availability', '=', True)
+        ])
+
+        return [(str(v.id), v.name) for v in vehicles]
+
     name = fields.Char(string='Name', default='New')
     date = fields.Datetime(string='Date', required=True, default=lambda self: fields.Datetime.now(),
             track_visibility='onchange')
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle', track_visibility='onchange',
             domain="[('check_availability', '=', True)]")
+    vehicle_selection = fields.Selection(
+                            selection='_get_vehicle_selection',
+                            string='Vehicle Selection',
+                            required=True
+                        )
     driver_id = fields.Many2one('res.users', string='Driver', track_visibility='onchange',
             domain="[('portal_transportation_request_driver', '=', True)]")
     destination_id = fields.Many2one('isy.destination', string='Destination', required=True, track_visibility='onchange')
@@ -31,6 +43,11 @@ class TransportationLogbook(models.Model):
     is_other_destination = fields.Boolean(related='destination_id.is_other_destination', string='Is Other Destination', store=True)
     other_destination = fields.Text(string='Other Destination')
     note = fields.Text(string='Note')
+
+    @api.onchange('vehicle_selection')
+    def _onchange_vehicle_selection(self):
+        if self.vehicle_selection:
+            self.vehicle_id = int(self.vehicle_selection)
 
     def check_mileage(self, start_mileage, end_mileage):
         if end_mileage == 0.00 or start_mileage >= end_mileage:

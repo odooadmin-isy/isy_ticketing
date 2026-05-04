@@ -10,6 +10,13 @@ class VehicleGeneratorLogbook(models.Model):
     _inherit = ['mail.thread']
     _description = 'Vehicle/Generator Fuel Logbook'
 
+    def _get_vehicle_selection(self):
+        vehicles = self.env['fleet.vehicle'].sudo().search([
+            ('check_availability', '=', True)
+        ])
+
+        return [(str(v.id), v.name) for v in vehicles]
+
     name = fields.Char(string='Name', default='New')
     logbook_type = fields.Selection([('vehicle', 'Vehicle'), ('generator', 'Generator')],
                     string='Type', required=True, default='vehicle', track_visibility='onchange')
@@ -17,6 +24,11 @@ class VehicleGeneratorLogbook(models.Model):
             string='Fuel Type', track_visibility='onchange')
     vehicle_id = fields.Many2one('fleet.vehicle', string='Vehicle', track_visibility='onchange',
             domain="[('check_availability', '=', True)]")
+    vehicle_selection = fields.Selection(
+                            selection='_get_vehicle_selection',
+                            string='Vehicle',
+                            required=True
+                        )
     driver_id = fields.Many2one('res.users', string='Driver', track_visibility='onchange',
             domain="[('portal_transportation_request_driver', '=', True)]")
     date = fields.Date(string='Date', required=True, default=lambda self: fields.Date.today(),
@@ -29,6 +41,11 @@ class VehicleGeneratorLogbook(models.Model):
                         store=True, track_visibility='onchange')
 
     note = fields.Text(string='Note')
+
+    @api.onchange('vehicle_selection')
+    def _onchange_vehicle_selection(self):
+        if self.vehicle_selection:
+            self.vehicle_id = int(self.vehicle_selection)
 
     @api.depends('amount_purchased', 'price_per_liter')
     def _compute_total_price(self):
