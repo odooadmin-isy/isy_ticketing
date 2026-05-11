@@ -27,7 +27,6 @@ class VehicleGeneratorLogbook(models.Model):
     vehicle_selection = fields.Selection(
                             selection='_get_vehicle_selection',
                             string='Vehicle',
-                            required=True
                         )
     driver_id = fields.Many2one('res.users', string='Driver', track_visibility='onchange',
             domain="[('portal_transportation_request_driver', '=', True)]")
