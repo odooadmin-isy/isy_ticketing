@@ -780,7 +780,7 @@
             id="isy_ticketing.menu_requests"
             parent="isy_ticketing.menu_isy_ticketing_root"
             groups="isy_ticketing.group_ser_requestor,isy_ticketing.group_ser_user,isy_ticketing.group_ser_manager,isy_ticketing.group_tnr_requestor,isy_ticketing.group_mr_requestor,isy_ticketing.group_tyr_requestor,isy_ticketing.group_mr_user,isy_ticketing.group_tyr_user,isy_ticketing.group_tnr_user"/>
-        <menuitem name="Settings" id="isy_ticketing.menu_settings" parent="isy_ticketing.menu_isy_ticketing_root" groups="isy_ticketing.group_mr_manager,isy_ticketing.group_tyr_manager"/>
+        <menuitem name="Settings" id="isy_ticketing.menu_settings" parent="isy_ticketing.menu_isy_ticketing_root" groups="isy_ticketing.group_mr_manager,isy_ticketing.group_tyr_manager" sequence="50"/>
         <menuitem name="Logbooks" id="isy_ticketing.menu_logbooks" parent="isy_ticketing.menu_isy_ticketing_root" groups="isy_ticketing.group_mr_manager,isy_ticketing.group_tyr_manager"/>
         <!-- actions -->
 
