@@ -22,7 +22,7 @@ class ISYTAudioVisualRequest(models.Model):
     request_date = fields.Date(string='Request Date', default=fields.Date.today)
     event_date = fields.Date(string='Event Date')
     start_time = fields.Float(string='Start Time', compute="_compute_start_time", inverse="_inverse_start_time", default=0.000)
-    end_time = fields.Float(string='End Time', compute="_compute_start_time", inverse="_inverse_start_time", default=0.000)
+    end_time = fields.Float(string='End Time', compute="_compute_end_time", inverse="_inverse_end_time", default=0.000)
     mic_qty = fields.Integer(String="Microphone Qty")
     projector_qty = fields.Integer(String="Projector Qty")
     location_id = fields.Many2one('stock.location', string='Resource/Location', domain=[('usage','=','internal'),('location_id','!=',False)])
