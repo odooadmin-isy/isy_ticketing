@@ -19,10 +19,7 @@ class TransportationLogbook(models.Model):
     _description = 'Transportation Logbook'
 
     def _get_vehicle_selection(self):
-        vehicles = self.env['fleet.vehicle'].sudo().search([
-            ('check_availability', '=', True)
-        ])
-
+        vehicles = self.env['fleet.vehicle'].sudo().search([])
         return [(str(v.id), v.name) for v in vehicles]
 
     name = fields.Char(string='Name', default='New')
